@@ -1,0 +1,13 @@
+@host = http://localhost:3000/api/products
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTcwMjAyMDMyNCwiZXhwIjoxNzAyMDYzNTI0fQ.hpQlzVM5hwoonidjsTl8zJEZ0V-cZktDVgXe_P4B7c8
+
+### 상품 생성
+POST {{host}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+   "title": "페페로로쉐",
+   "description": "중동성 강한 초콜렛"
+}
+

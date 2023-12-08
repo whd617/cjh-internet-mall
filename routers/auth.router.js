@@ -140,7 +140,7 @@ authRouter.post('/signin', async (req, res) => {
       data: { accessToken },
     });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     return res.status(500).json({
       success: true,
       message: '예상치 못한 에러가 발생하였습니다. 관리자에게 문의하세요',
