@@ -32,10 +32,7 @@ export const needSignIn = async (req, res, next) => {
       });
     }
 
-    const decodedPayload = jwt.verify(
-      accessToken,
-      JWT_ACCESS_TOKEN_SECRET + '1',
-    );
+    const decodedPayload = jwt.verify(accessToken, JWT_ACCESS_TOKEN_SECRET);
     const { userId } = decodedPayload;
     console.log({ decodedPayload });
 
