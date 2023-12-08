@@ -16,4 +16,19 @@ GET {{host}}?sort=desc
 
 
 ### 상품 상세 조회
-GET {{host}}/4
+GET {{host}}/1
+
+### 상품 수정
+PUT {{host}}/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+
+   "status": "SOLD_OUT1"
+}
+
+### 상품 삭제
+DELETE {{host}}/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
