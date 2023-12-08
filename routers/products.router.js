@@ -1,8 +1,9 @@
 import { Router } from 'express';
+import { Sequelize } from 'sequelize';
 import { needSignIn } from '../middlewares/need-signin.middleware.js';
 import db from '../models/index.cjs';
 const productsRouter = Router();
-const { Products } = db;
+const { Products, Users } = db;
 // 생성
 productsRouter.post('', needSignIn, async (req, res) => {
   try {
@@ -41,6 +42,39 @@ productsRouter.post('', needSignIn, async (req, res) => {
 // 목록 조회
 productsRouter.get('', async (req, res) => {
   try {
+    const { sort } = req.query;
+    let upperCaseSort = sort?.toUpperCase();
+
+    if (upperCaseSort !== 'ASC' && upperCaseSort !== 'DESC') {
+      upperCaseSort = 'DESC';
+    }
+
+    const products = await Products.findAll({
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'status',
+        'userId',
+        [Sequelize.col('user.name'), 'userName'],
+        'createdAt',
+        'updatedAt',
+      ],
+      order: [['createdAt', upperCaseSort]],
+      include: { model: Users, as: 'user', attributes: [] },
+    });
+
+    console.log(
+      products.map((product) => {
+        product.toJSON();
+      }),
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: '상품 목록 조회에 성공했습니다.',
+      data: products,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -53,6 +87,26 @@ productsRouter.get('', async (req, res) => {
 
 productsRouter.get('/:productId', async (req, res) => {
   try {
+    const { productId } = req.params;
+
+    const product = await Products.findByPk(productId, {
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'status',
+        'userId',
+        [Sequelize.col('user.name'), 'userName'],
+        'createdAt',
+        'updatedAt',
+      ],
+      include: { model: Users, as: 'user', attributes: [] },
+    });
+    return res.status(200).json({
+      success: true,
+      message: '상품 목록 조회에 성공했습니다.',
+      data: product,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
